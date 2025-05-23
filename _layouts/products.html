@@ -760,10 +760,9 @@ layout: default
       const filterElement = document.createElement('span');
       filterElement.className = 'selected-filter';
       filterElement.setAttribute('data-type', 'category');
-      filterElement.innerHTML = `
-        ${category}
-        <button onclick="removeFilter('category', '${category}')">&times;</button>
-      `;
+      filterElement.innerHTML = 
+        category +
+        '<button onclick="removeFilter(\'category\', \'' + category + '\')">&times;</button>';
       selectedFiltersList.appendChild(filterElement);
     });
     
@@ -773,10 +772,9 @@ layout: default
       const filterElement = document.createElement('span');
       filterElement.className = 'selected-filter';
       filterElement.setAttribute('data-type', 'tag');
-      filterElement.innerHTML = `
-        ${tag}
-        <button onclick="removeFilter('tag', '${tag}')">&times;</button>
-      `;
+      filterElement.innerHTML = 
+        tag +
+        '<button onclick="removeFilter(\'tag\', \'' + tag + '\')">&times;</button>';
       selectedFiltersList.appendChild(filterElement);
     });
     
@@ -786,7 +784,7 @@ layout: default
   // 필터 제거
   function removeFilter(type, value) {
     activeFilters[type].delete(value);
-    document.querySelector(`input[type="checkbox"][value="${value}"]`).checked = false;
+    document.querySelector('input[type="checkbox"][value="' + value + '"]').checked = false;
     updateSelectedFilters();
     filterProducts();
   }
