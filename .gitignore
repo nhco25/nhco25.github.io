@@ -3,3 +3,10 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
+
+# 로컬 개발용 파일들
+local_serve.bat
+local_serve.ps1
+_config_local.yml
+.bundle/
+LOCAL_DEVELOPMENT.md
