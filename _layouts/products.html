@@ -1,0 +1,899 @@
+---
+layout: default
+---
+
+<style>
+  /* 전역 변수 설정 */
+  :root {
+    --sidebar-width: 280px;
+    --primary-color: #2c3e50;
+    --primary-light: #3a5172;
+    --secondary-color: #3498db;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --border-color: #e8e8e8;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --header-height: 60px;
+    --footer-height: 60px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* main 요소 스타일 덮어쓰기 */
+  main {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 제품 페이지 컨테이너 */
+  .products-wrapper {
+    width: 100%;
+    margin-top: var(--header-height);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--header-height));
+  }
+
+  /* 페이지 컨테이너 */
+  .products-page {
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    height: auto;
+    flex: 1;
+  }
+
+  /* 사이드바 */
+  .products-sidebar {
+    width: var(--sidebar-width);
+    position: sticky;
+    top: var(--header-height);
+    left: 0;
+    height: auto;
+    min-height: 300px;
+    max-height: calc(100vh - var(--header-height) - 20px);
+    background-color: var(--gray-100);
+    border-right: 1px solid var(--border-color);
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+    z-index: 999;
+    flex-shrink: 0;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    box-sizing: border-box;
+  }
+
+  .products-sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .products-sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    background-color: var(--gray-100);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    z-index: 2;
+  }
+
+  /* 필터 섹션 */
+  .filter-section {
+    margin-bottom: 2rem;
+  }
+
+  .filter-section h4 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  /* 체크박스 스타일 */
+  .filter-group {
+    margin-bottom: 1rem;
+  }
+
+  .filter-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .filter-item input[type="checkbox"] {
+    margin-right: 0.5rem;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .filter-item label {
+    color: var(--gray-700);
+    font-size: 0.95rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .filter-item:hover label {
+    color: var(--primary-color);
+  }
+
+  /* 선택된 필터 표시 */
+  .selected-filters {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: var(--gray-200);
+    border-radius: 8px;
+  }
+
+  .selected-filter {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--gray-300);
+    color: var(--gray-700);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    margin: 0.25rem;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    border: 1px solid var(--gray-100);
+  }
+  
+  .selected-filter[data-type="category"] {
+    background-color: #3498db;
+    color: white;
+    border: 1px solid #2980b9;
+    border: 1px solid var(--gray-100);
+  }
+
+  .selected-filter[data-type="category"]:hover {
+    background-color: #2980b9;
+  }
+
+  .selected-filter[data-type="tag"]:hover {
+    background-color: var(--gray-400);
+  }
+
+  .selected-filter button {
+    background: none;
+    border: none;
+    color: inherit;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
+  }
+
+  /* 필터 초기화 버튼 */
+  .reset-filters {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    background-color: var(--gray-200);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .reset-filters:hover {
+    background-color: var(--gray-300);
+    color: var(--primary-color);
+  }
+
+  /* 메인 콘텐츠 */
+  .products-main {
+    flex: 1;
+    width: calc(100% - var(--sidebar-width));
+    padding: 2rem 3rem;
+    min-height: calc(100vh - var(--header-height));
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .products-main h1 {
+    margin-top: 0;
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* 제품 그리드 */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+  }
+
+  /* 제품 카드 */
+  .product-card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow);
+  }
+
+  .product-card h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    word-break: keep-all;
+  }
+
+  .product-card p {
+    color: var(--gray-700);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    /* word-break: keep-all; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    max-height: 4.8em;
+    position: relative;
+  }
+  .product-card p::after {
+    content: "...";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding-left: 3px;
+    background-color: white;
+    display: none;
+  }
+  .product-card p.truncated::after {
+    display: inline;
+  }
+
+  .product-category {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .product-category:hover {
+    background-color: #2980b9;
+  }
+
+  /* 제품 태그 */
+  .product-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .product-tag {
+    background-color: var(--gray-300);
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--gray-700);
+    transition: all 0.2s ease;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .product-tag:hover {
+    background-color: var(--gray-400);
+  }
+
+  .product-tag.active {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  /* 제품 내용 */
+  .product-content {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: var(--gray-700);
+    flex-grow: 1;
+    word-break: keep-all;
+  }
+
+  .product-content h2 {
+    font-size: 1.1rem;
+    margin: 1.5rem 0 0.75rem;
+    color: var(--primary-color);
+  }
+
+  .product-content ul {
+    padding-left: 1.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .product-content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .product-features {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .product-features h4 {
+    color: var(--primary-color);
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+  }
+
+  .product-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .product-features li {
+    margin-bottom: 0.25rem;
+    padding-left: 1.25rem;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .product-features li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+  }
+
+  /* 상세 보기 버튼 스타일 */
+  .product-detail-link {
+    margin-top: auto;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gray-200);
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .product-detail-link .btn {
+    width: calc(100% - 2px);
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 모바일 미디어 쿼리 */
+  @media (max-width: 768px) {
+    .products-wrapper {
+      margin-top: calc(var(--header-height) + 10px);
+    }
+
+    .products-page {
+      flex-direction: column;
+      min-height: auto;
+    }
+
+    .products-sidebar {
+      width: auto;
+      min-width: 120px;
+      height: auto;
+      max-height: 0;
+      overflow: hidden;
+      position: fixed;
+      top: calc(70px + 50px); /* 필터 버튼 높이(50px) + top 위치(70px) */
+      right: 10px;
+      left: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0;
+      transition: all 0.3s ease;
+      background-color: var(--gray-100);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 9998;
+      border-radius: 8px;
+      opacity: 0;
+    }
+
+    .products-sidebar.active {
+      max-height: 80vh;
+      padding: 1rem;
+      overflow-y: auto;
+      opacity: 1;
+    }
+
+    .products-main {
+      width: 100%;
+      padding: 5rem 1rem 3rem;
+      min-height: auto;
+    }
+
+    .product-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .product-filter-toggle {
+      display: block;
+      position: fixed;
+      top: 70px;
+      right: 10px;
+      left: auto;
+      z-index: 999;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      min-width: 100px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .product-filter-toggle .filter-icon {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1); /* 아이콘을 흰색으로 변경 */
+      display: inline-block;
+      vertical-align: middle;
+      margin-top: -1px; /* 미세 조정 */
+      margin-right: 3px;
+    }
+
+    .product-filter-toggle .filter-text {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .product-filter-toggle:hover {
+      background: var(--primary-light);
+    }
+
+    /* 모바일에서 카테고리 리스트 스타일 조정 */
+    .products-sidebar h3 {
+      display: none;
+    }
+
+    .products-sidebar .tag-list {
+      margin: 0;
+      padding: 0;
+    }
+
+    .products-sidebar .tag-item {
+      margin: 0;
+      padding: 0;
+    }
+
+    .products-sidebar .tag-link {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      border-radius: 0;
+      white-space: nowrap;
+      display: block;
+      color: var(--gray-800);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .products-sidebar .tag-link:hover {
+      background-color: var(--gray-200);
+      color: var(--primary-color);
+    }
+
+    .products-sidebar .tag-link.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .products-sidebar .tag-link:last-child {
+      border-radius: 0 0 8px 8px;
+    }
+
+    .filter-section {
+      margin-bottom: 1rem;
+    }
+
+    .filter-section h4 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .selected-filters {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+    }
+
+    .selected-filter {
+      display: flex;
+      margin: 0.25rem 0;
+      justify-content: space-between;
+    }
+
+    #selected-filters-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+
+  /* 결과 없음 메시지 스타일 */
+  .no-results-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 1 / -1;
+    min-height: 300px;
+    width: 100%;
+  }
+  
+  .no-results-message {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin: 2rem 0;
+    max-width: 600px;
+    min-width: 280px;
+    width: 80%;
+  }
+  
+  .no-results-message h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+  }
+  
+  .no-results-message p {
+    color: var(--gray-700);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+</style>
+
+<div class="products-wrapper">
+  <div class="products-page">
+    <button class="product-filter-toggle" onclick="toggleSidebar()" style="display: none;">
+      <img src="/assets/images/filter.png" alt="필터" class="filter-icon">
+      <span class="filter-text">필터</span>
+    </button>
+    <aside class="products-sidebar">
+      <h3>제품 필터</h3>
+      
+      <!-- 카테고리 필터 -->
+      <div class="filter-section">
+        <h4>카테고리</h4>
+        <div class="filter-group">
+          {% assign categories = site.products | map: "category" | uniq | where_exp: "category", "category != nil and category != ''" %}
+          {% for category in categories %}
+          <div class="filter-item">
+            <input type="checkbox" id="category-{{ category | slugify }}" name="category" value="{{ category }}">
+            <label for="category-{{ category | slugify }}">{{ category }}</label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- 태그 필터 -->
+      <div class="filter-section">
+        <h4>태그</h4>
+        <div class="filter-group">
+          {% assign all_tags = site.products | map: "tags" | flatten | uniq | where_exp: "tag", "tag != nil and tag != ''" %}
+          {% for tag in all_tags %}
+          <div class="filter-item">
+            <input type="checkbox" id="tag-{{ tag | slugify }}" name="tag" value="{{ tag }}">
+            <label for="tag-{{ tag | slugify }}">{{ tag }}</label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- 선택된 필터 표시 -->
+      <div class="selected-filters" style="display: none;">
+        <h4>선택된 필터</h4>
+        <div id="selected-filters-list"></div>
+      </div>
+
+      <!-- 필터 초기화 버튼 -->
+      <button class="reset-filters" onclick="resetFilters()">필터 초기화</button>
+    </aside>
+
+    <div class="products-main">
+      <!-- <h1>{{ page.title }}</h1> -->
+      {{ content }}
+
+      <div class="product-grid">
+        <!-- 검색 결과 없음 메시지 (중앙 배치) -->
+        <div class="no-results-container" id="noResultsContainer" style="display: none;">
+          <div class="no-results-message">
+            <h3>검색 결과가 없습니다</h3>
+            <p>선택하신 필터 조건에 맞는 제품이 없습니다.<br>다른 필터 조건을 선택하시거나 필터를 초기화하여 다시 시도해 주세요.</p>
+            <button class="btn btn-primary" onclick="resetFilters()">필터 초기화</button>
+          </div>
+        </div>
+
+        {% assign products = site.products | sort: 'order' %}
+        {% for product in products %}
+        <div class="product-card" 
+             data-category="{{ product.category }}"
+             data-tags="{{ product.tags | join: ',' }}">
+          <span class="product-category">{{ product.category }}</span>
+          <h3>{{ product.title }}</h3>
+          <p>{{ product.description }}</p>
+          <div class="product-tags">
+            {% for tag in product.tags %}
+            <span class="product-tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          <div class="product-features">
+            <h4>주요 특징</h4>
+            <ul>
+              {% for feature in product.features limit: 3 %}
+              <li>{{ feature }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="product-detail-link">
+            <a href="{{ product.url }}" class="btn btn-primary">상세 정보 보기</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 텍스트 말줄임 확인 함수
+  function checkTruncation() {
+    document.querySelectorAll('.product-card p').forEach(paragraph => {
+      if (paragraph.scrollHeight > paragraph.clientHeight) {
+        paragraph.classList.add('truncated');
+      } else {
+        paragraph.classList.remove('truncated');
+      }
+    });
+  }
+  
+  // 페이지 로드 시 실행
+  window.addEventListener('load', function() {
+    setTimeout(checkTruncation, 100);
+  });
+  
+  // 화면 크기 변경 시 다시 확인
+  window.addEventListener('resize', function() {
+    setTimeout(checkTruncation, 100);
+  });
+  
+  // 필터 상태 관리
+  let activeFilters = {
+    category: new Set(),
+    tag: new Set()
+  };
+
+  // 필터 변경 이벤트 처리
+  document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      const filterType = this.name; // 'category' 또는 'tag'
+      const filterValue = this.value;
+      
+      if (this.checked) {
+        activeFilters[filterType].add(filterValue);
+      } else {
+        activeFilters[filterType].delete(filterValue);
+      }
+      
+      updateSelectedFilters();
+      filterProducts();
+    });
+  });
+
+  // 선택된 필터 업데이트
+  function updateSelectedFilters() {
+    const selectedFiltersList = document.getElementById('selected-filters-list');
+    const selectedFiltersContainer = document.querySelector('.selected-filters');
+    selectedFiltersList.innerHTML = '';
+    
+    let hasSelectedFilters = false;
+    
+    // 카테고리 필터 표시
+    activeFilters.category.forEach(category => {
+      hasSelectedFilters = true;
+      const filterElement = document.createElement('span');
+      filterElement.className = 'selected-filter';
+      filterElement.setAttribute('data-type', 'category');
+      filterElement.innerHTML = `
+        ${category}
+        <button onclick="removeFilter('category', '${category}')">&times;</button>
+      `;
+      selectedFiltersList.appendChild(filterElement);
+    });
+    
+    // 태그 필터 표시
+    activeFilters.tag.forEach(tag => {
+      hasSelectedFilters = true;
+      const filterElement = document.createElement('span');
+      filterElement.className = 'selected-filter';
+      filterElement.setAttribute('data-type', 'tag');
+      filterElement.innerHTML = `
+        ${tag}
+        <button onclick="removeFilter('tag', '${tag}')">&times;</button>
+      `;
+      selectedFiltersList.appendChild(filterElement);
+    });
+    
+    selectedFiltersContainer.style.display = hasSelectedFilters ? 'block' : 'none';
+  }
+
+  // 필터 제거
+  function removeFilter(type, value) {
+    activeFilters[type].delete(value);
+    document.querySelector(`input[type="checkbox"][value="${value}"]`).checked = false;
+    updateSelectedFilters();
+    filterProducts();
+  }
+
+  // 필터 초기화
+  function resetFilters() {
+    activeFilters.category.clear();
+    activeFilters.tag.clear();
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    updateSelectedFilters();
+    filterProducts();
+  }
+
+  // 제품 필터링
+  function filterProducts() {
+    const products = document.querySelectorAll('.product-card');
+    const noResultsContainer = document.getElementById('noResultsContainer');
+    let visibleProductCount = 0;
+    
+    // 필터링 후 말줄임 다시 확인
+    setTimeout(checkTruncation, 100);
+    
+    products.forEach(product => {
+      const productCategory = product.dataset.category;
+      const productTags = product.dataset.tags.split(',');
+      
+      // 카테고리 매칭 (OR 방식 유지)
+      const categoryMatch = activeFilters.category.size === 0 || 
+                          activeFilters.category.has(productCategory);
+      
+      // 태그 매칭 (AND 방식)
+      const tagMatch = activeFilters.tag.size === 0 || 
+                      Array.from(activeFilters.tag).every(tag => productTags.includes(tag));
+      
+      const isVisible = categoryMatch && tagMatch;
+      product.style.display = isVisible ? 'flex' : 'none';
+      
+      if (isVisible) {
+        visibleProductCount++;
+      }
+    });
+    
+    // 결과가 없을 때 메시지 표시
+    if (visibleProductCount === 0) {
+      noResultsContainer.style.display = 'flex';
+      // product-grid 레이아웃 유지
+      document.querySelector('.product-grid').style.display = 'grid';
+    } else {
+      noResultsContainer.style.display = 'none';
+    }
+    
+    // 레이아웃 안정화를 위해 timeout 추가
+    setTimeout(function() {
+      // 사이드바 헤더 위치 재조정
+      const sidebarHeader = document.querySelector('.products-sidebar h3');
+      if (sidebarHeader) {
+        sidebarHeader.style.top = '0';
+      }
+    }, 100);
+  }
+
+  // 화면 크기에 따라 모바일 버튼 표시
+  function checkScreenSize() {
+    const mobileButton = document.querySelector('.product-filter-toggle');
+    const sidebar = document.querySelector('.products-sidebar');
+    
+    // 헤더 높이 업데이트
+    const headerHeight = document.querySelector('.site-header').offsetHeight;
+    document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
+    
+    // products-wrapper 상단 마진 업데이트
+    document.querySelector('.products-wrapper').style.marginTop = headerHeight + 'px';
+    
+    if (window.innerWidth <= 768) {
+      mobileButton.style.display = 'block';
+      sidebar.classList.remove('active');
+    } else {
+      mobileButton.style.display = 'none';
+      sidebar.classList.add('active');
+    }
+  }
+  
+  // 사이드바 토글 함수
+  function toggleSidebar() {
+    const sidebar = document.querySelector('.products-sidebar');
+    sidebar.classList.toggle('active');
+  }
+  
+  // 페이지 로드 시 및 화면 크기 변경 시 체크
+  window.addEventListener('load', checkScreenSize);
+  window.addEventListener('resize', checkScreenSize);
+
+  // 문서 클릭 이벤트 처리
+  document.addEventListener('click', function(event) {
+    const sidebar = document.querySelector('.products-sidebar');
+    const filterToggle = document.querySelector('.product-filter-toggle');
+    
+    // 사이드바나 필터 토글 버튼을 클릭한 경우는 무시
+    if (sidebar.contains(event.target) || filterToggle.contains(event.target)) {
+      return;
+    }
+    
+    // 다른 영역을 클릭한 경우 사이드바 닫기
+    if (sidebar.classList.contains('active')) {
+      sidebar.classList.remove('active');
+    }
+  });
+</script> 

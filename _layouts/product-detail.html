@@ -1,0 +1,798 @@
+---
+layout: default
+---
+
+<style>
+  /* 전역 변수 설정 */
+  :root {
+    --primary-color: #2c3e50;
+    --primary-light: #3a5172;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --accent-light: #f9ebea;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --border-color: #e8e8e8;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --header-height: 60px;
+    --footer-height: 60px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* main 요소 스타일 덮어쓰기 */
+  main {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 제품 상세 페이지 컨테이너 */
+  .product-detail-wrapper {
+    width: 100%;
+    margin-top: var(--header-height);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--header-height));
+    padding-bottom: 2rem;
+    background-color: #e9ecef;
+  }
+
+  /* 제품 상세 헤더 */
+  .product-detail-header {
+    background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+    border-bottom: 1px solid var(--border-color);
+    padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-detail-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/assets/images/subtle-tech-pattern.jpg');
+    opacity: 0.05;
+    z-index: 1;
+  }
+
+  .product-detail-header .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .product-detail-header h1 {
+    color: white;
+    font-size: 2.8rem;
+    margin: 0;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .product-category-label {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.4rem 1.2rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .product-detail-tag {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: white;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+  }
+  
+  .product-detail-tag:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+  }
+
+  /* 제품 상세 내용 */
+  .product-detail-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    width: 100%;
+    box-sizing: border-box;
+    background: #f8f9fb;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    margin-top: -40px;
+    z-index: 10;
+    position: relative;
+  }
+
+  .product-detail-description {
+    color: var(--gray-700);
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    max-width: 800px;
+    padding: 1.5rem;
+    background-color: var(--gray-100);
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary-color);
+  }
+
+  /* 제품 캐로셀 스타일 */
+  .product-carousel {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    /* background-color: #f8f9fb; */
+    /* border-radius: 12px; */
+    /* border: 1px solid var(--gray-200); */
+  }
+  
+  .carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+    border: 2px solid var(--gray-300);
+  }
+  
+  .carousel-slides {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    height: 500px;
+  }
+  
+  .carousel-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+  }
+  
+  .carousel-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+  }
+  
+  .carousel-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .prev-btn {
+    left: 10px;
+  }
+  
+  .next-btn {
+    right: 10px;
+  }
+  
+  .carousel-indicators {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 2;
+  }
+  
+  .carousel-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+  }
+  
+  .carousel-indicator.active {
+    background-color: white;
+    transform: scale(1.3);
+  }
+  
+  /* 캐로셀이 1개의 이미지만 있을 때 버튼 숨김 */
+  .carousel-container.single-slide .carousel-btn,
+  .carousel-container.single-slide .carousel-indicators {
+    display: none;
+  }
+
+  /* 제품 개요 스타일 */
+  .product-overview {
+    margin-bottom: 3rem;
+  }
+  
+  .overview-content {
+    background-color: #f8fdff;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--secondary-color);
+  }
+  
+  .overview-content p {
+    color: var(--gray-700);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  
+  .overview-content p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .overview-content strong {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  /* 섹션 스타일 */
+  .product-section {
+    margin-bottom: 3.5rem;
+    padding: 0 1rem;
+  }
+
+  .product-section h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+    display: inline-block;
+  }
+  
+  .product-section h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 70px;
+    height: 3px;
+    background: var(--secondary-color);
+    border-radius: 3px;
+  }
+
+  .product-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .product-section li {
+    padding-left: 1.8rem;
+    position: relative;
+    margin-bottom: 0.85rem;
+    font-size: 1.05rem;
+    color: var(--gray-700);
+    line-height: 1.6;
+  }
+
+  .product-section li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--secondary-color);
+    font-weight: bold;
+  }
+  
+  /* 기술 사양 테이블 */
+  .specs-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1.5rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 1rem;
+  }
+  
+  .specs-table thead {
+    border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .specs-table thead tr {
+    border-bottom: none;
+  }
+  
+  .specs-table th,
+  .specs-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .specs-table th {
+    background-color: var(--gray-100);
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 1rem;
+    width: 30%;
+    vertical-align: middle;
+  }
+  
+  .specs-table tbody th.spec-key {
+    width: 30%;
+    min-width: 120px;
+    background-color: rgba(236, 240, 245, 0.7);
+    border-right: 1px solid var(--gray-200);
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+  
+  .specs-table td.spec-value {
+    width: 70%;
+    color: var(--gray-700);
+  }
+  
+  .specs-table td.spec-full {
+    color: var(--gray-700);
+    background-color: var(--gray-100);
+    font-style: italic;
+  }
+  
+  .specs-table thead th {
+    background-color: var(--primary-light);
+    color: white;
+    text-align: center;
+    padding: 1.2rem 1rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  
+  .specs-table thead th.spec-name {
+    width: 30%;
+    background-color: var(--primary-color);
+    border-right: 2px solid white;
+    border-top-left-radius: 8px;
+  }
+  
+  .specs-table thead th.spec-value {
+    width: 70%;
+    border-top-right-radius: 8px;
+  }
+  
+  .specs-table tr:nth-child(even) {
+    background-color: rgba(248, 249, 250, 0.5);
+  }
+  
+  .specs-table tr:last-child td,
+  .specs-table tr:last-child th {
+    border-bottom: none;
+  }
+  
+  .specs-table td {
+    color: var(--gray-700);
+    font-size: 1rem;
+    vertical-align: middle;
+  }
+
+  .specs-table tr:hover {
+    background-color: rgba(233, 236, 239, 0.4);
+  }
+
+  /* 뒤로 가기 버튼 */
+  .back-to-products {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--gray-200);
+    color: var(--gray-700);
+    border: none;
+    padding: 0.65rem 1.2rem;
+    border-radius: 6px;
+    margin-bottom: 2.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .back-to-products:hover {
+    background-color: var(--gray-300);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .back-to-products svg {
+    margin-right: 0.5rem;
+    fill: currentColor;
+  }
+  
+  /* 마크다운 내용 스타일링 */
+  .product-content {
+    margin-bottom: 2.5rem;
+  }
+  
+  .product-content h2 {
+    font-size: 1.7rem;
+    color: var(--primary-color);
+    margin: 2rem 0 1rem;
+    border-bottom: 1px solid var(--gray-200);
+    padding-bottom: 0.5rem;
+  }
+  
+  .product-content h3 {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    margin: 1.5rem 0 1rem;
+  }
+  
+  .product-content p {
+    color: var(--gray-700);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+  }
+  
+  .product-content a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--secondary-color);
+    transition: all 0.2s ease;
+  }
+  
+  .product-content a:hover {
+    color: var(--primary-color);
+    border-bottom-style: solid;
+  }
+  
+  .product-content blockquote {
+    border-left: 4px solid var(--secondary-color);
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    margin: 1.5rem 0;
+    color: var(--gray-600);
+    background-color: var(--gray-100);
+    border-radius: 0 4px 4px 0;
+  }
+  
+  .product-content img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-content code {
+    background-color: var(--gray-100);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+  }
+  
+  .product-content pre {
+    background-color: var(--gray-800);
+    color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  
+  .product-content pre code {
+    background: none;
+    color: white;
+    padding: 0;
+  }
+
+  /* 반응형 스타일 */
+  @media (max-width: 768px) {
+    .product-detail-header {
+      padding: 2.5rem 0;
+    }
+
+    .product-detail-header h1 {
+      font-size: 2rem;
+    }
+
+    .product-detail-content {
+      padding: 2rem 1.5rem;
+      margin-top: -30px;
+    }
+    
+    .specs-table th,
+    .specs-table td {
+      padding: 0.8rem 1rem;
+    }
+    
+    .specs-table thead th.spec-name,
+    .specs-table thead th.spec-value {
+      font-size: 0.95rem;
+      padding: 1rem 0.8rem;
+    }
+    
+    .specs-table tbody th.spec-key {
+      min-width: 100px;
+    }
+  }
+</style>
+
+<div class="product-detail-wrapper">
+  <div class="product-detail-header">
+    <div class="container">
+      <span class="product-category-label">{{ page.category }}</span>
+      <h1>{{ page.title }}</h1>
+      <div class="product-detail-tags">
+        {% for tag in page.tags %}
+        <span class="product-detail-tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="product-detail-content">
+    <a href="/products" class="back-to-products">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+      </svg>
+      제품 목록으로 돌아가기
+    </a>
+
+    <div class="product-carousel">
+      {% if page.images %}
+        <div class="carousel-container">
+          <div class="carousel-slides">
+            {% for image in page.images %}
+              <div class="carousel-slide">
+                <img src="{{ image.src }}" alt="{{ image.alt | default: page.title }}" class="carousel-image">
+              </div>
+            {% endfor %}
+          </div>
+          
+          <button class="carousel-btn prev-btn" aria-label="이전 슬라이드">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+          <button class="carousel-btn next-btn" aria-label="다음 슬라이드">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+            </svg>
+          </button>
+          
+          <div class="carousel-indicators">
+            {% for image in page.images %}
+              <button class="carousel-indicator{% if forloop.first %} active{% endif %}" data-slide-index="{{ forloop.index0 }}" aria-label="슬라이드 {{ forloop.index }}"></button>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    
+    {% if page.overview %}
+    <div class="product-section product-overview">
+      <h2>제품 개요</h2>
+      <div class="overview-content">
+        {{ page.overview | markdownify }}
+      </div>
+    </div>
+    {% endif %}
+    
+    <div class="product-content">
+      {{ content }}
+    </div>
+
+    {% if page.features %}
+    <div class="product-section">
+      <h2>주요 특징</h2>
+      <ul>
+        {% for feature in page.features %}
+        <li>{{ feature }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if page.specifications %}
+    <div class="product-section">
+      <h2>기술 사양</h2>
+      <table class="specs-table">
+        <thead>
+          <tr>
+            <th class="spec-name">항목</th>
+            <th class="spec-value">사양</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for spec in page.specifications %}
+            <tr class="spec-row">
+              <th class="spec-key">{{ spec.name }}</th>
+              <td class="spec-value">{{ spec.value }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    {% if page.applications %}
+    <div class="product-section">
+      <h2>적용 분야</h2>
+      <ul>
+        {% for app in page.applications %}
+        <li>{{ app }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 캐로셀 초기화
+    initCarousel();
+  });
+  
+  function initCarousel() {
+    const carouselContainer = document.querySelector('.carousel-container');
+    if (!carouselContainer) return;
+    
+    const slidesContainer = carouselContainer.querySelector('.carousel-slides');
+    const slides = carouselContainer.querySelectorAll('.carousel-slide');
+    const prevBtn = carouselContainer.querySelector('.prev-btn');
+    const nextBtn = carouselContainer.querySelector('.next-btn');
+    const indicators = carouselContainer.querySelectorAll('.carousel-indicator');
+    
+    // 슬라이드가 1개만 있으면 버튼과 인디케이터 숨김
+    if (slides.length <= 1) {
+      carouselContainer.classList.add('single-slide');
+      return;
+    }
+    
+    let currentIndex = 0;
+    
+    // 슬라이드 변경 함수
+    function goToSlide(index) {
+      if (index < 0) {
+        index = slides.length - 1;
+      } else if (index >= slides.length) {
+        index = 0;
+      }
+      
+      currentIndex = index;
+      slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+      
+      // 인디케이터 업데이트
+      indicators.forEach((indicator, i) => {
+        indicator.classList.toggle('active', i === currentIndex);
+      });
+    }
+    
+    // 이벤트 리스너 등록
+    prevBtn.addEventListener('click', () => {
+      goToSlide(currentIndex - 1);
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      goToSlide(currentIndex + 1);
+    });
+    
+    // 인디케이터 클릭 이벤트
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        goToSlide(index);
+      });
+    });
+    
+    // 키보드 탐색 지원
+    carouselContainer.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        goToSlide(currentIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        goToSlide(currentIndex + 1);
+      }
+    });
+    
+    // 터치 슬라이드 지원
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    slidesContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    slidesContainer.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+    
+    function handleSwipe() {
+      const minSwipeDistance = 50;
+      if (touchStartX - touchEndX > minSwipeDistance) {
+        // 왼쪽으로 스와이프
+        goToSlide(currentIndex + 1);
+      } else if (touchEndX - touchStartX > minSwipeDistance) {
+        // 오른쪽으로 스와이프
+        goToSlide(currentIndex - 1);
+      }
+    }
+    
+    // 자동 슬라이드 (옵션)
+    /*
+    let autoSlideInterval = setInterval(() => {
+      goToSlide(currentIndex + 1);
+    }, 5000); // 5초마다 슬라이드 변경
+    
+    carouselContainer.addEventListener('mouseenter', () => {
+      clearInterval(autoSlideInterval);
+    });
+    
+    carouselContainer.addEventListener('mouseleave', () => {
+      autoSlideInterval = setInterval(() => {
+        goToSlide(currentIndex + 1);
+      }, 5000);
+    });
+    */
+  }
+</script>
+</body>
+</html> 
