@@ -9,9 +9,9 @@ title: NH
   </div>
   <div class="overlay"></div>
   <div class="hero-content">
-    <h1>X-ray 및 광확비전의<br>혁신적인 솔루션</h1>
+    <h1>X-ray 및 광학비전 검사의<br>혁신적인 솔루션</h1>
     <div class="bottom-content">
-      <p>엔에이치는 X-ray와 광학비전을 통한 검사, 분석, 타공 장비,<br> PLC 공정 자동화 장비를 전문제작 합니다.<br>최신 기술로 공정 자동화에 혁신을 가져옵니다.</p>
+      <p>엔에이치는 엑스레이, 광학간섭계 등의 광학기술을 응용한<br>검사·측정·분석·가공 장비를 제작 공급하는 전문업체입니다.<br>로봇 기술과 결합하여 공정 자동화에 혁신을 가져옵니다.</p>
       <div class="hero-buttons">
         <a href="/products/" class="btn btn-primary">제품 보기</a>
       </div>
