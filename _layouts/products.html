@@ -760,9 +760,13 @@ layout: default
       const filterElement = document.createElement('span');
       filterElement.className = 'selected-filter';
       filterElement.setAttribute('data-type', 'category');
-      filterElement.innerHTML = 
-        category +
-        '<button onclick="removeFilter(\'category\', \'' + category + '\')">&times;</button>';
+      
+      const button = document.createElement('button');
+      button.innerHTML = '&times;';
+      button.onclick = function() { removeFilter('category', category); };
+      
+      filterElement.textContent = category;
+      filterElement.appendChild(button);
       selectedFiltersList.appendChild(filterElement);
     });
     
@@ -772,9 +776,13 @@ layout: default
       const filterElement = document.createElement('span');
       filterElement.className = 'selected-filter';
       filterElement.setAttribute('data-type', 'tag');
-      filterElement.innerHTML = 
-        tag +
-        '<button onclick="removeFilter(\'tag\', \'' + tag + '\')">&times;</button>';
+      
+      const button = document.createElement('button');
+      button.innerHTML = '&times;';
+      button.onclick = function() { removeFilter('tag', tag); };
+      
+      filterElement.textContent = tag;
+      filterElement.appendChild(button);
       selectedFiltersList.appendChild(filterElement);
     });
     
@@ -784,7 +792,10 @@ layout: default
   // 필터 제거
   function removeFilter(type, value) {
     activeFilters[type].delete(value);
-    document.querySelector('input[type="checkbox"][value="' + value + '"]').checked = false;
+    const checkbox = document.querySelector('input[type="checkbox"][name="' + type + '"][value="' + value.replace(/"/g, '\\"') + '"]');
+    if (checkbox) {
+      checkbox.checked = false;
+    }
     updateSelectedFilters();
     filterProducts();
   }
