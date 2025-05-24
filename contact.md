@@ -5,7 +5,7 @@ permalink: /contact/
 ---
 
 ## 연락처
-- {: .email} 이메일: info@nhco.com
+- {: .email} 이메일: info@nhco.kr
 - {: .phone} 전화: 031-470-8787
 - {: .address} 팩스: 031-629-7873
 
