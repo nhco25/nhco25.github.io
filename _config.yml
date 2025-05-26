@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: NH - X-ray 자동화 장비 전문 제조업체
+title: ""
 email: info@nhco.kr
 description: >-
   엔에이치는 X-ray(엑스레이), 광학비전 검사 장비 및 자동화 솔루션을 제조하는 전문업체입니다. 
