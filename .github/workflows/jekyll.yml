@@ -39,13 +39,25 @@ jobs:
         with:
           ruby-version: '3.2' # Updated to support sass-embedded
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-          cache-version: 0 # Increment this number if you need to re-download cached gems
+          cache-version: 1 # Increment this number if you need to re-download cached gems
+          working-directory: . # Specify working directory for bundler cache
+      - name: Cache Jekyll build
+        uses: actions/cache@v4
+        with:
+          path: |
+            .jekyll-cache
+            _site
+          key: ${{ runner.os }}-jekyll-${{ hashFiles('**/*.md', '**/*.html', '**/*.yml', '**/*.yaml', 'Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-jekyll-
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
-        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        run: |
+          echo "🚀 Building Jekyll site with caching enabled..."
+          bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
       - name: Upload artifact
