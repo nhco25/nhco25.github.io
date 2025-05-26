@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: {{ site.url }}/sitemap.xml
+
+Disallow: /assets/
+Disallow: /.well-known/
+Disallow: /.git/
+Disallow: /.github/ 

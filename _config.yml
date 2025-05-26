@@ -18,13 +18,43 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: NH
+title: NH - X-ray 자동화 장비 전문 제조업체
 email: info@nhco.kr
-description: X-ray 자동화 장비제조
+description: >-
+  엔에이치는 X-ray, 광학비전 검사 장비 및 자동화 솔루션을 제조하는 전문업체입니다. 
+  로봇 기술과 결합한 혁신적인 검사·측정·분석·가공 장비를 공급합니다.
 baseurl: "" # GitHub Pages에서 자동으로 설정됨
 url: "https://nhco.kr" # 실제 도메인
 # twitter_username: jekyllrb
 github_username: nhco25
+
+# SEO 설정
+author:
+  name: NH 주식회사
+  email: info@nhco.kr
+  
+# 소셜 미디어 및 검색엔진 최적화
+social:
+  name: NH 주식회사
+  links:
+    - https://github.com/nhco25
+
+# 언어 설정
+lang: ko-KR
+
+# 회사 정보 (구조화된 데이터용)
+company:
+  name: NH 주식회사
+  address: 
+    street: ""
+    city: ""
+    state: ""
+    zip: ""
+    country: "대한민국"
+  phone: ""
+  email: info@nhco.kr
+  founded: ""
+  industry: "X-ray 자동화 장비 제조"
 
 # Build settings
 theme: minima
