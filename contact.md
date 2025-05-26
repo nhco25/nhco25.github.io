@@ -1,6 +1,5 @@
 ---
 layout: contact
-title: NH
 description: >-
   NH 주식회사에 X-ray 검사 장비, 자동화 솔루션에 대한 문의를 남겨주세요. 
   전문 상담을 통해 최적의 솔루션을 제안해드립니다.
