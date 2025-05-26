@@ -21,8 +21,8 @@
 title: NH - X-ray 자동화 장비 전문 제조업체
 email: info@nhco.kr
 description: >-
-  엔에이치는 X-ray, 광학비전 검사 장비 및 자동화 솔루션을 제조하는 전문업체입니다. 
-  로봇 기술과 결합한 혁신적인 검사·측정·분석·가공 장비를 공급합니다.
+  엔에이치는 X-ray(엑스레이), 광학비전 검사 장비 및 자동화 솔루션을 제조하는 전문업체입니다. 
+  xray 검사 장비와 로봇 기술을 결합한 혁신적인 검사·측정·분석·가공 장비를 공급합니다.
 baseurl: "" # GitHub Pages에서 자동으로 설정됨
 url: "https://nhco.kr" # 실제 도메인
 # twitter_username: jekyllrb
@@ -93,6 +93,10 @@ collections:
 product_tags:
   - name: X-ray 검사 장비
     slug: xray
+  - name: 엑스레이 검사 장비
+    slug: xray-korean
+  - name: xray 검사 장비
+    slug: xray-english
   - name: 자동화 솔루션
     slug: automation
   - name: 맞춤형 장비

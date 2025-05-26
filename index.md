@@ -6,6 +6,11 @@ description: >-
   로봇 기술과 결합한 혁신적인 검사·측정·분석·가공 장비를 공급합니다.
 keywords: 
   - X-ray 검사 장비
+  - xray 검사 장비
+  - 엑스레이 검사 장비
+  - 엑스 레이 검사 장비
+  - X레이 검사 장비
+  - X-RAY 검사 장비
   - 자동화 솔루션
   - 광학비전 검사
   - 로봇 자동화
@@ -17,7 +22,7 @@ image: /assets/images/hero-image.jpg
 
 <div class="hero-section">
   <div class="hero-image">
-    <img src="/assets/images/hero-image.jpg" alt="X-ray 장비 이미지">
+    <img src="/assets/images/hero-image.jpg" alt="">
   </div>
   <div class="overlay"></div>
   <div class="hero-content">
@@ -64,6 +69,15 @@ image: /assets/images/hero-image.jpg
       <p>제품이나 서비스에 대해 궁금하신 점이 있으시다면 언제든지 문의해 주세요.</p>
       <a href="/contact/" class="btn btn-secondary">문의하기</a>
     </div>
+  </section>
+  
+  <!-- SEO 키워드 섹션 (검색엔진용) -->
+  <section class="seo-keywords" style="display: none;">
+    <h2>X-ray 검사 장비 전문업체</h2>
+    <p>NH는 X-ray, xray, 엑스레이, 엑스 레이, X레이, X-RAY 검사 장비를 전문으로 제조하는 업체입니다.</p>
+    <p>엑스레이 자동화 장비, xray 자동화 시스템, X-ray 자동화 솔루션을 제공합니다.</p>
+    <p>X레이 검사 시스템, 엑스 레이 검사 장비, X-RAY 검사 솔루션 전문 제조업체입니다.</p>
+    <p>X레이 타겟 드릴, X-ray 타겟드릴, X-ray 가이드 홀 펀칭머신, 전문 제조업체입니다.</p>
   </section>
 </div> 
 
