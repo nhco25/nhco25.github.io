@@ -28,6 +28,24 @@ url: "https://nhco.kr" # 실제 도메인
 # twitter_username: jekyllrb
 github_username: nhco25
 
+# 메타데이터 개선
+locale: ko_KR
+timezone: Asia/Seoul
+
+# 사이트 메타 정보
+meta:
+  keywords: "X-ray 검사 장비, xray 검사 장비, 엑스레이 검사 장비, 자동화 솔루션, 로봇 자동화, 광학비전 검사, 품질 관리 시스템"
+  robots: "index, follow"
+  # google_site_verification: "" # 구글 서치 콘솔 인증 코드
+  # naver_site_verification: "" # 네이버 웹마스터 인증 코드
+
+# Open Graph 기본 설정
+og:
+  type: website
+  image: /assets/icons/og-image.jpg
+  image_width: 1200
+  image_height: 630
+
 # SEO 설정
 author:
   name: 엔에이치 주식회사
@@ -44,23 +62,42 @@ lang: ko-KR
 
 # 회사 정보 (구조화된 데이터용)
 company:
-  name: 엔에이치 주식회사
+  name: 엔에이치
+  legal_name: 엔에이치 주식회사
+  brand_name: NH
   address: 
     street: ""
     city: ""
     state: ""
     zip: ""
     country: "대한민국"
-  phone: ""
+  phone: "031-470-8787"
+  fax: "031-629-7873"
   email: info@nhco.kr
   founded: ""
   industry: "X-ray 자동화 장비 제조"
+  business_type: "제조업"
+  specialties:
+    - "X-ray 검사 장비"
+    - "광학비전 검사 시스템"
+    - "자동화 솔루션"
+    - "로봇 자동화"
+    - "품질 관리 시스템"
 
 # Build settings
 theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Jekyll SEO Tag 설정
+seo:
+  type: Organization
+  name: 엔에이치 주식회사
+  links:
+    - https://nhco.kr
+    - https://github.com/nhco25
 
 # Exclude from processing.
 # The following items will not be processed, by default.

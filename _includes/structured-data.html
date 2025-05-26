@@ -3,12 +3,15 @@
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "{{ site.company.name }}",
+  "legalName": "{{ site.company.legal_name }}",
+  "alternateName": ["{{ site.company.brand_name }}", "엔에이치", "NH 주식회사"],
   "url": "{{ site.url }}",
-  "logo": "{{ site.url }}/assets/images/logo.png",
+  "logo": "{{ site.url }}/assets/icons/logo.png",
   "description": "{{ site.description }}",
-  "alternateName": ["NH", "엔에이치", "NH 주식회사"],
-  "keywords": "X-ray, xray, 엑스레이, 엑스 레이, X레이, 검사 장비, 자동화 솔루션",
+  "keywords": "{{ site.meta.keywords }}",
   "email": "{{ site.email }}",
+  "telephone": "{{ site.company.phone }}",
+  "faxNumber": "{{ site.company.fax }}",
   "address": {
     "@type": "PostalAddress",
     "addressCountry": "{{ site.company.address.country }}"
@@ -18,11 +21,22 @@
     "{{ link }}"{% unless forloop.last %},{% endunless %}
     {% endfor %}
   ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "email": "{{ site.email }}",
-    "contactType": "customer service"
-  }
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "{{ site.company.phone }}",
+      "email": "{{ site.email }}",
+      "contactType": "customer service",
+      "availableLanguage": "Korean"
+    }
+  ],
+  "foundingDate": "{{ site.company.founded }}",
+  "industry": "{{ site.company.industry }}",
+  "knowsAbout": [
+    {% for specialty in site.company.specialties %}
+    "{{ specialty }}"{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
 }
 </script>
 
