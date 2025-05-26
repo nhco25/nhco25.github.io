@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: ""
+# title: ""
 email: info@nhco.kr
 description: >-
   엔에이치는 X-ray(엑스레이), 광학비전 검사 장비 및 자동화 솔루션을 제조하는 전문업체입니다. 
@@ -30,21 +30,21 @@ github_username: nhco25
 
 # SEO 설정
 author:
-  name: NH 주식회사
+  name: 엔에이치 주식회사
   email: info@nhco.kr
   
 # 소셜 미디어 및 검색엔진 최적화
 social:
-  name: NH 주식회사
+  name: 엔에이치 주식회사
   links:
-    - https://github.com/nhco25
+    - https://nhco.kr
 
 # 언어 설정
 lang: ko-KR
 
 # 회사 정보 (구조화된 데이터용)
 company:
-  name: NH 주식회사
+  name: 엔에이치 주식회사
   address: 
     street: ""
     city: ""
