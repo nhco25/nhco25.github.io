@@ -1,5 +1,6 @@
 ---
 layout: products
+title: 제품소개
 description: >-
   NH의 X-ray 검사 장비, 광학비전 검사 시스템, 자동화 솔루션을 확인하세요. 
   PRD5022, PRI5700, LVI600 등 다양한 검사 및 측정 장비를 제공합니다.
