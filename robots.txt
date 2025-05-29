@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: {{ site.url }}/sitemap.xml
+Sitemap: https://nhco.kr/sitemap.xml/sitemap.xml
 
 Disallow: /assets/
 Disallow: /.well-known/
