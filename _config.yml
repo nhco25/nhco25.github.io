@@ -90,6 +90,22 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
+# SASS 설정 (CSS 압축)
+sass:
+  style: compressed  # CSS 압축 및 주석 제거
+  sourcemap: never   # 소스맵 생성 안함
+
+# 환경별 설정
+environment: production
+
+# HTML 압축 설정
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  blanklines: false
+  profile: false
+
 # Jekyll SEO Tag 설정
 title: NH
 seo:

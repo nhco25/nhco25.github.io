@@ -1,3 +1,6 @@
+---
+layout: compress
+---
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -168,62 +171,36 @@
 
     <script>
       function toggleMobileMenu(event) {
-        // 이벤트 전파 방지
-        if (event) {
-          event.stopPropagation();
-        }
-        
+        if (event) event.stopPropagation();
         const nav = document.querySelector('.site-nav');
         const headerCenter = document.querySelector('.header-center');
-        const body = document.querySelector('body');
-        
         nav.classList.toggle('active');
-        
-        // 메뉴가 열려있는지 확인
         if (nav.classList.contains('active')) {
-          // 배경색 설정
           headerCenter.style.backgroundColor = 'var(--primary-color, #2c3e50)';
-          // 페이지 클릭 시 메뉴 닫기 이벤트
           document.addEventListener('click', closeMenuOnClickOutside);
-          
-          // 제품 페이지에서 필터 사이드바 닫기
           const productsSidebar = document.querySelector('.products-sidebar');
           if (productsSidebar && productsSidebar.classList.contains('active')) {
             productsSidebar.classList.remove('active');
           }
-          
-          // 모바일 메뉴가 열리면 스크롤 위치 고정
           window.scrollTo(0, 0);
         } else {
-          // 배경색 제거
           headerCenter.style.backgroundColor = 'transparent';
-          // 메뉴가 닫혔을 때 이벤트 제거
           document.removeEventListener('click', closeMenuOnClickOutside);
         }
       }
-      
       function closeMenuOnClickOutside(event) {
         const nav = document.querySelector('.site-nav');
         const headerCenter = document.querySelector('.header-center');
         const mobileToggle = document.querySelector('.mobile-menu-toggle');
-        
-        // 메뉴 내부나 토글 버튼을 클릭한 경우 무시
-        if (nav.contains(event.target) || mobileToggle.contains(event.target)) {
-          return;
-        }
-        
-        // 그 외 영역 클릭 시 메뉴 닫기
+        if (nav.contains(event.target) || mobileToggle.contains(event.target)) return;
         nav.classList.remove('active');
         headerCenter.style.backgroundColor = 'transparent';
         document.removeEventListener('click', closeMenuOnClickOutside);
       }
-
-      // 화면 크기가 변경될 때 모바일 메뉴 상태 체크
       function checkMobileMenu() {
         const nav = document.querySelector('.site-nav');
         const headerCenter = document.querySelector('.header-center');
         const toggleButton = document.querySelector('.header-right button');
-        
         if (window.innerWidth <= 768) {
           toggleButton.style.display = 'block';
           nav.classList.remove('active');
@@ -234,8 +211,6 @@
           headerCenter.style.backgroundColor = 'transparent';
         }
       }
-
-      // 페이지 로드 시와 화면 크기 변경 시 체크
       window.addEventListener('load', checkMobileMenu);
       window.addEventListener('resize', checkMobileMenu);
     </script>
