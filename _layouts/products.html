@@ -702,7 +702,6 @@ layout: default
 </div>
 
 <script>
-  // 텍스트 말줄임 확인 함수
   function checkTruncation() {
     document.querySelectorAll('.product-card p').forEach(paragraph => {
       if (paragraph.scrollHeight > paragraph.clientHeight) {
@@ -713,26 +712,22 @@ layout: default
     });
   }
   
-  // 페이지 로드 시 실행
   window.addEventListener('load', function() {
     setTimeout(checkTruncation, 100);
   });
   
-  // 화면 크기 변경 시 다시 확인
   window.addEventListener('resize', function() {
     setTimeout(checkTruncation, 100);
   });
   
-  // 필터 상태 관리
   let activeFilters = {
     category: new Set(),
     tag: new Set()
   };
 
-  // 필터 변경 이벤트 처리
   document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
     checkbox.addEventListener('change', function() {
-      const filterType = this.name; // 'category' 또는 'tag'
+      const filterType = this.name;
       const filterValue = this.value;
       
       if (this.checked) {
@@ -746,7 +741,6 @@ layout: default
     });
   });
 
-  // 선택된 필터 업데이트
   function updateSelectedFilters() {
     const selectedFiltersList = document.getElementById('selected-filters-list');
     const selectedFiltersContainer = document.querySelector('.selected-filters');
@@ -754,7 +748,6 @@ layout: default
     
     let hasSelectedFilters = false;
     
-    // 카테고리 필터 표시
     activeFilters.category.forEach(category => {
       hasSelectedFilters = true;
       const filterElement = document.createElement('span');
@@ -770,7 +763,6 @@ layout: default
       selectedFiltersList.appendChild(filterElement);
     });
     
-    // 태그 필터 표시
     activeFilters.tag.forEach(tag => {
       hasSelectedFilters = true;
       const filterElement = document.createElement('span');
@@ -789,7 +781,6 @@ layout: default
     selectedFiltersContainer.style.display = hasSelectedFilters ? 'block' : 'none';
   }
 
-  // 필터 제거
   function removeFilter(type, value) {
     activeFilters[type].delete(value);
     const checkbox = document.querySelector('input[type="checkbox"][name="' + type + '"][value="' + value.replace(/"/g, '\\"') + '"]');
@@ -800,7 +791,6 @@ layout: default
     filterProducts();
   }
 
-  // 필터 초기화
   function resetFilters() {
     activeFilters.category.clear();
     activeFilters.tag.clear();
@@ -811,24 +801,20 @@ layout: default
     filterProducts();
   }
 
-  // 제품 필터링
   function filterProducts() {
     const products = document.querySelectorAll('.product-card');
     const noResultsContainer = document.getElementById('noResultsContainer');
     let visibleProductCount = 0;
     
-    // 필터링 후 말줄임 다시 확인
     setTimeout(checkTruncation, 100);
     
     products.forEach(product => {
       const productCategory = product.dataset.category;
       const productTags = product.dataset.tags.split(',');
       
-      // 카테고리 매칭 (OR 방식 유지)
       const categoryMatch = activeFilters.category.size === 0 || 
                           activeFilters.category.has(productCategory);
       
-      // 태그 매칭 (AND 방식)
       const tagMatch = activeFilters.tag.size === 0 || 
                       Array.from(activeFilters.tag).every(tag => productTags.includes(tag));
       
@@ -840,18 +826,14 @@ layout: default
       }
     });
     
-    // 결과가 없을 때 메시지 표시
     if (visibleProductCount === 0) {
       noResultsContainer.style.display = 'flex';
-      // product-grid 레이아웃 유지
       document.querySelector('.product-grid').style.display = 'grid';
     } else {
       noResultsContainer.style.display = 'none';
     }
     
-    // 레이아웃 안정화를 위해 timeout 추가
     setTimeout(function() {
-      // 사이드바 헤더 위치 재조정
       const sidebarHeader = document.querySelector('.products-sidebar h3');
       if (sidebarHeader) {
         sidebarHeader.style.top = '0';
@@ -859,16 +841,13 @@ layout: default
     }, 100);
   }
 
-  // 화면 크기에 따라 모바일 버튼 표시
   function checkScreenSize() {
     const mobileButton = document.querySelector('.product-filter-toggle');
     const sidebar = document.querySelector('.products-sidebar');
     
-    // 헤더 높이 업데이트
     const headerHeight = document.querySelector('.site-header').offsetHeight;
     document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
     
-    // products-wrapper 상단 마진 업데이트
     document.querySelector('.products-wrapper').style.marginTop = headerHeight + 'px';
     
     if (window.innerWidth <= 768) {
@@ -880,27 +859,22 @@ layout: default
     }
   }
   
-  // 사이드바 토글 함수
   function toggleSidebar() {
     const sidebar = document.querySelector('.products-sidebar');
     sidebar.classList.toggle('active');
   }
   
-  // 페이지 로드 시 및 화면 크기 변경 시 체크
   window.addEventListener('load', checkScreenSize);
   window.addEventListener('resize', checkScreenSize);
 
-  // 문서 클릭 이벤트 처리
   document.addEventListener('click', function(event) {
     const sidebar = document.querySelector('.products-sidebar');
     const filterToggle = document.querySelector('.product-filter-toggle');
     
-    // 사이드바나 필터 토글 버튼을 클릭한 경우는 무시
     if (sidebar.contains(event.target) || filterToggle.contains(event.target)) {
       return;
     }
     
-    // 다른 영역을 클릭한 경우 사이드바 닫기
     if (sidebar.classList.contains('active')) {
       sidebar.classList.remove('active');
     }

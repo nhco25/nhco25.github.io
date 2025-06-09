@@ -688,7 +688,6 @@ layout: default
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // 캐로셀 초기화
     initCarousel();
   });
   
@@ -702,7 +701,6 @@ layout: default
     const nextBtn = carouselContainer.querySelector('.next-btn');
     const indicators = carouselContainer.querySelectorAll('.carousel-indicator');
     
-    // 슬라이드가 1개만 있으면 버튼과 인디케이터 숨김
     if (slides.length <= 1) {
       carouselContainer.classList.add('single-slide');
       return;
@@ -710,7 +708,6 @@ layout: default
     
     let currentIndex = 0;
     
-    // 슬라이드 변경 함수
     function goToSlide(index) {
       if (index < 0) {
         index = slides.length - 1;
@@ -721,13 +718,11 @@ layout: default
       currentIndex = index;
       slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
       
-      // 인디케이터 업데이트
       indicators.forEach((indicator, i) => {
         indicator.classList.toggle('active', i === currentIndex);
       });
     }
     
-    // 이벤트 리스너 등록
     prevBtn.addEventListener('click', () => {
       goToSlide(currentIndex - 1);
     });
@@ -736,14 +731,12 @@ layout: default
       goToSlide(currentIndex + 1);
     });
     
-    // 인디케이터 클릭 이벤트
     indicators.forEach((indicator, index) => {
       indicator.addEventListener('click', () => {
         goToSlide(index);
       });
     });
     
-    // 키보드 탐색 지원
     carouselContainer.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         goToSlide(currentIndex - 1);
@@ -752,7 +745,6 @@ layout: default
       }
     });
     
-    // 터치 슬라이드 지원
     let touchStartX = 0;
     let touchEndX = 0;
     
@@ -768,30 +760,11 @@ layout: default
     function handleSwipe() {
       const minSwipeDistance = 50;
       if (touchStartX - touchEndX > minSwipeDistance) {
-        // 왼쪽으로 스와이프
         goToSlide(currentIndex + 1);
       } else if (touchEndX - touchStartX > minSwipeDistance) {
-        // 오른쪽으로 스와이프
         goToSlide(currentIndex - 1);
       }
     }
-    
-    // 자동 슬라이드 (옵션)
-    /*
-    let autoSlideInterval = setInterval(() => {
-      goToSlide(currentIndex + 1);
-    }, 5000); // 5초마다 슬라이드 변경
-    
-    carouselContainer.addEventListener('mouseenter', () => {
-      clearInterval(autoSlideInterval);
-    });
-    
-    carouselContainer.addEventListener('mouseleave', () => {
-      autoSlideInterval = setInterval(() => {
-        goToSlide(currentIndex + 1);
-      }, 5000);
-    });
-    */
   }
 </script>
 </body>
