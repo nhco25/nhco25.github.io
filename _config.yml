@@ -101,10 +101,12 @@ environment: production
 # HTML 압축 설정
 compress_html:
   clippings: all
-  comments: all
+  comments: ["<!-- ", " -->"] # HTML 주석만 제거
   endings: all
   blanklines: false
   profile: false
+  ignore:
+    envs: [development]
 
 # Jekyll SEO Tag 설정
 title: NH
